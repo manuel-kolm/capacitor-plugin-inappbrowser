@@ -2,7 +2,6 @@ package com.capacitor.plugin.inappbrowser;
 
 import android.net.Uri;
 
-import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
@@ -32,7 +31,13 @@ public class InAppBrowserPlugin extends Plugin {
 
     @PluginMethod
     public void close(PluginCall call) {
-        implementation.close();
+        String id = call.getString("id");
+        if (id == null || id.isEmpty()) {
+            call.reject("Id must be non null nor empty.");
+            return;
+        }
+
+        implementation.close(id);
         call.resolve();
     }
 }
