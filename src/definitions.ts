@@ -4,5 +4,5 @@ export interface BrowserOptions {
 
 export interface InAppBrowserPlugin {
   open(options: BrowserOptions): Promise<void>;
-  close(): Promise<void>
+  close(options: { id: string }): Promise<void>
 }
