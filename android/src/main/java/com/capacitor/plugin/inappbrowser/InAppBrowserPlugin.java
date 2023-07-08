@@ -14,7 +14,7 @@ public class InAppBrowserPlugin extends Plugin {
 
     @Override
     public void load() {
-        implementation = new InAppBrowser(getContext(), getActivity());
+        implementation = new InAppBrowser(getContext(), getActivity(), this::onInAppBrowserEvent);
     }
 
     @PluginMethod
@@ -39,5 +39,16 @@ public class InAppBrowserPlugin extends Plugin {
 
         implementation.close(id);
         call.resolve();
+    }
+
+    void onInAppBrowserEvent(int event) {
+        switch (event) {
+            case InAppBrowser.BROWSER_OPEN_EVENT:
+                notifyListeners("open", null);
+                break;
+            case InAppBrowser.BROWSER_CLOSE_EVENT:
+                notifyListeners("close", null);
+                break;
+        }
     }
 }

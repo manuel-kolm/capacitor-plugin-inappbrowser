@@ -19,15 +19,23 @@ import java.util.logging.Logger;
 
 public class InAppBrowser {
 
+    interface InAppBrowserEventListener {
+        void onInAppBrowserEvent(int event);
+    }
+
+    public static final int BROWSER_OPEN_EVENT = 0;
+    public static final int BROWSER_CLOSE_EVENT = 1;
     private static final Logger LOG = Logger.getGlobal();
     private final Context context;
     private final AppCompatActivity activity;
+    private final InAppBrowserEventListener eventListener;
 
     private List<WebView> webViews;
 
-    public InAppBrowser(Context context, AppCompatActivity activity) {
+    public InAppBrowser(Context context, AppCompatActivity activity, InAppBrowserEventListener eventListener) {
         this.context = context;
         this.activity = activity;
+        this.eventListener = eventListener;
     }
 
     public void open(Uri uri) {
@@ -64,6 +72,7 @@ public class InAppBrowser {
                 }
             });
             webViews.add(webView);
+            eventListener.onInAppBrowserEvent(BROWSER_OPEN_EVENT);
         });
     }
 
@@ -86,6 +95,8 @@ public class InAppBrowser {
             ((ViewGroup) activity.findViewById(android.R.id.content)).removeView(webView);
             webView.setVisibility(View.GONE);
             webView.destroy();
+
+            eventListener.onInAppBrowserEvent(BROWSER_CLOSE_EVENT);
         });
     }
 }

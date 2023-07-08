@@ -1,12 +1,12 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { BrowserOptions, InAppBrowserPlugin } from './definitions';
+import type { OpenOptions, InAppBrowserPlugin, CloseOptions } from './definitions';
 
 export class InAppBrowserWeb extends WebPlugin implements InAppBrowserPlugin {
-  async open(_: BrowserOptions): Promise<void> {
+  async open(_: OpenOptions): Promise<void> {
     throw new Error('Method not implemented.');
   }
-  async close(): Promise<void> {
+  async close(_: CloseOptions): Promise<void> {
     throw new Error('Method not implemented.');
   }
 }
