@@ -8,11 +8,24 @@ import Capacitor
 @objc(InAppBrowserPlugin)
 public class InAppBrowserPlugin: CAPPlugin {
     private let implementation = InAppBrowser()
-
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.resolve([
-            "value": implementation.echo(value)
-        ])
+    
+    @objc func open(_ call: CAPPluginCall) {
+        guard let urlString = call.getString("url"), let url = URL(string: urlString) else {
+            call.reject("Must provide a valid URL to open")
+            return
+        }
+        
+        implementation.open(url)
+        call.resolve()
+    }
+    
+    @objc func close(_ call: CAPPluginCall) {
+        guard let id = call.options["id"] as? String else {
+          call.reject("Must provide an id")
+          return
+        }
+        
+        implementation.close(id)
+        call.resolve()
     }
 }
